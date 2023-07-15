@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+    api:
+        build: .
+        command: ["python", "-m", "src"]
+        env_file:
+            - ./config/envs/.api.default
+            - ./config/envs/.api.override
+        profiles:
+            - development
+    
+    test:
+        build: .
+        command: ["pytest", "-vvv", "src"]
+        profiles:
+            - testing
