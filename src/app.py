@@ -13,6 +13,7 @@ def create_app() -> Flask:
     )
     return app
 
+
 def main():
     create_app().run(
         host=config.flask_host,

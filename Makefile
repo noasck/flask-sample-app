@@ -6,3 +6,7 @@ test:
 
 down:
 	docker compose down --remove-orphans --volumes
+
+
+black:
+	black src/**/**.py

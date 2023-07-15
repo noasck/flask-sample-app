@@ -1,4 +1,4 @@
-# Please, create .env file with following variables to override:
+# Please, create "override" file with following variables to override:
 ACCOUNTING_APP_ENV=development
 ACCOUNTING_APP_DSN=sample-pg-dsn
 ACCOUNTING_APP_FLASK_HOST=0.0.0.0

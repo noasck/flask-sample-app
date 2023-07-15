@@ -5,13 +5,15 @@ services:
         build: .
         command: ["python", "-m", "src"]
         env_file:
-            - ./config/envs/.api.default
-            - ./config/envs/.api.override
+            - ./configs/api/default
+            - ./configs/api/override
         profiles:
             - development
     
     test:
         build: .
-        command: ["pytest", "-vvv", "src"]
+        command: ["pytest", "--color=yes", "-vv", "--tb=short", "-l", "--capture=sys", "src"]
+        env_file:
+            - ./configs/api/test
         profiles:
             - testing
