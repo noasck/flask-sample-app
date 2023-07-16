@@ -1,0 +1,2 @@
+POSTGRES_PASSWORD=dummy-pass
+POSTGRES_USER=accounter
