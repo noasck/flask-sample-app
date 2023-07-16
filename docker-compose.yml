@@ -16,7 +16,7 @@ services:
     
     tests:
         build: .
-        command: ["pytest", "--color=yes", "-vv", "--tb=short", "-l", "--capture=sys", "src"]
+        command: ["pytest", "--color=yes", "-vv", "--tb=long", "-l", "--capture=sys", "src"]
         env_file:
             - ./configs/api/test
         profiles:

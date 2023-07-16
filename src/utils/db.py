@@ -18,6 +18,7 @@ class _ConnectionPool():
             with cls._lock:
                 if not cls._instance:
                     cls._instance = super().__new__(cls)
+                    cls._instance._init()
         return cls._instance
 
     def handle_reconnection_error(self, *args, **kwargs):
@@ -29,9 +30,8 @@ class _ConnectionPool():
             exc_info={"context": args}
         )
 
-    def __init__(self):
+    def _init(self):
         """Instanciate connection pool."""
-
         self.pool = psycopg_pool.ConnectionPool(
             config.dsn,
             max_size=20,

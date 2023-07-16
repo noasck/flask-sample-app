@@ -1,2 +1,3 @@
 POSTGRES_PASSWORD=dummy-pass
-POSTGRES_USER=accounter
+POSTGRES_USER=batya
+POSTGRES_DB=accounting
