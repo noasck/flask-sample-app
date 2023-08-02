@@ -56,9 +56,9 @@ def db_query(func: callable) -> callable:
                     return func(*args, **kwargs)
         except psycopg.Error as error:
             raise DBException(
-                msg="Unhandled db error during query.",
+                msg="Database exception during query execution.",
                 exc_info={"diag": error.diag},
-            )
+            ) from error
     return wrapper
 
 
@@ -79,7 +79,7 @@ def db_command(func: callable) -> callable:
                     raise error
         except psycopg.Error as error:
             raise DBException(
-                msg="Unhandled db error during query.",
+                msg="Database exception during transaction.",
                 exc_info={"diag": error.diag},
-            )
+            ) from error
     return wrapper

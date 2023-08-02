@@ -1,0 +1,1 @@
+CREATE DATABASE t_accounting OWNER batya;

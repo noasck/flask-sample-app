@@ -1,5 +1,6 @@
 import pytest
 import psycopg_pool
+import psycopg
 
 from unittest import mock
 
@@ -28,9 +29,26 @@ def test_ConnectionPool_singleton():
 
 
 @pytest.mark.integrity
-def test_ConnectionPool_create():
+def test_ConnectionPool_connect():
     """Positive case: open connection pool to test db."""
     with _ConnectionPool().pool.connection() as conn:
         res = conn.execute("SELECT 42;")
         assert res.fetchone()[0] == 42
  
+
+@pytest.mark.integrity
+def test_db_query():
+    """Test positive case: db_query decorator."""
+
+    @db_query
+    def read_42(cursor: psycopg.Cursor):
+        """Dummy service method."""
+        return cursor.execute("select 42;").fetchone()[0]
+
+
+    assert read_42() == 42
+
+
+# @pytest.mark.integrity
+# def test_db_command(c):
+#     """"""
