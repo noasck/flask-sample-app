@@ -7,25 +7,20 @@ services:
         env_file:
             - ./configs/api/default
             - ./configs/api/override
-        profiles:
-            - development
         networks:
-            - dev_postgres
-        depends_on:
-            - dev_postgres
-    
-    tests:
-        build: .
-        command: ["pytest", "--color=yes", "-vv", "--tb=long", "-l", "--capture=sys", "src"]
-        env_file:
-            - ./configs/api/test
-        profiles:
-            - testing
-        networks:
-            - dev_postgres
+            - dev_postgres_ntwk
         depends_on:
             - dev_postgres
 
+    tests:
+        build: .
+        command: ["pytest", "src"]
+        env_file:
+            - ./configs/api/test
+        networks:
+            - tests_postgres_ntwk
+        depends_on:
+            - tests_postgres
 
     dev_postgres:
         image: postgres:latest
@@ -34,10 +29,13 @@ services:
         expose:
             - 5432
         networks:
-            - dev_postgres
-        profiles:
-            - testing
-            - development
+            - dev_postgres_ntwk
+    
+    tests_postgres:
+        extends: dev_postgres
+        networks:
+            - tests_postgres_ntwk
 
 networks:
-    dev_postgres:
+    dev_postgres_ntwk:
+    tests_postgres_ntwk:

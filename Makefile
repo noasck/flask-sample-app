@@ -1,12 +1,16 @@
+testpath := src
+
 dev:
-	docker compose --profile development up --build
+	docker compose up api --build
 
 test:
-	docker compose --profile testing up --build --abort-on-container-exit
+	docker compose run --rm --build tests pytest ${testpath}
+
+test_unit:
+	docker compose run --rm --build tests pytest -m "not integrity" ${testpath}
 
 down:
 	docker compose down --remove-orphans --volumes
-
 
 black:
 	black src/**/**.py
