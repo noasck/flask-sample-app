@@ -51,6 +51,7 @@ class _ConnectionPool:
 
 def db_query(func: callable) -> callable:
     """Injects db cursor with no transaction."""
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs) -> any:
         """Acquire and inject autocommiting cursor."""
@@ -63,11 +64,13 @@ def db_query(func: callable) -> callable:
                 msg="Database exception during query execution.",
                 exc_info={"diag": error.diag},
             ) from error
+
     return wrapper
 
 
 def db_command(func: callable) -> callable:
     """Injects db cursor, wrapped in transaction."""
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs) -> any:
         """Acquire and inject cursor with transaction."""
@@ -85,4 +88,5 @@ def db_command(func: callable) -> callable:
                 msg="Database exception during transaction.",
                 exc_info={"diag": error.diag},
             ) from error
+
     return wrapper

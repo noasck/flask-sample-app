@@ -47,8 +47,3 @@ def test_db_query():
 
 
     assert read_42() == 42
-
-
-# @pytest.mark.integrity
-# def test_db_command(c):
-#     """"""

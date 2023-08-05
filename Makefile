@@ -12,5 +12,5 @@ test_unit:
 down:
 	docker compose down --remove-orphans --volumes
 
-black:
-	black src/**/**.py
+format:
+	black ./src && ruff ./src --fix
