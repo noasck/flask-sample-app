@@ -1,17 +1,20 @@
 """Config."""
-import threading
 import os
-from loguru import logger
 import sys
-from pydantic.dataclasses import dataclass, ConfigDict
-from pydantic import field_validator, FieldValidationInfo, ValidationError
+import threading
 from enum import Enum
+from typing import ClassVar
+
+from loguru import logger
+from pydantic import ValidationError, field_validator
+from pydantic.dataclasses import ConfigDict, dataclass
 
 APP_NAME = "accounting_app"
 _APP_ENV_PREFIX = APP_NAME.upper() + "_"
 
 
 class AllowedEnvs(Enum):
+
     """Allowed ENV and FLASK_ENV values."""
 
     dev = "development"
@@ -26,6 +29,7 @@ class AllowedEnvs(Enum):
     ),
 )
 class ConfigParser:
+
     """Pass lowercased envs names below."""
 
     env: AllowedEnvs
@@ -35,12 +39,13 @@ class ConfigParser:
 
     @field_validator("env")
     @classmethod
-    def validate_env(cls, v: str, info: FieldValidationInfo):
+    def validate_env(cls, v: str) -> AllowedEnvs:
         """Validate env is one of allowed."""
         return AllowedEnvs(v)
 
 
-class _Config(object):
+class _Config:
+
     """
     Thread safe singleton.
 
@@ -55,10 +60,9 @@ class _Config(object):
     # Logger sinks are analogs to default logger handlers.
     # For every output source should be 1 sink.
     # Sinks could be removed from any place in the code:
-    #     logger.remove(_Config._logger_sinks["<SINK NAME>"])
-    _logger_sinks = {}
+    _logger_sinks: ClassVar[dict[str, int]] = {}
 
-    def __new__(cls):
+    def __new__(cls) -> "_Config":
         """Aquire lock and create instance per thread."""
         if cls._instance is None:
             with cls._lock:
@@ -67,7 +71,7 @@ class _Config(object):
                     cls._instance.__init()
         return cls._instance
 
-    def __init(self):
+    def __init(self) -> None:
         """Parse configuration."""
         try:
             # Reading environmental variables
@@ -87,10 +91,10 @@ class _Config(object):
                     error.get("loc", ["NA"])[0],
                     error.get("msg", "NA"),
                 )
-            raise exc
-        except BaseException as exc:
+            raise
+        except BaseException:
             logger.exception("Unknown exception during config parsing.")
-            raise exc
+            raise
 
         # Set up logger. Remove defaults:
         logger.remove()

@@ -5,7 +5,7 @@ import psycopg
 from unittest import mock
 
 from .db import db_command, db_query, _ConnectionPool
-from ..exceptions import DBException
+from ..exceptions import DBError
 
 
 def test_ConnectionPool_singleton():

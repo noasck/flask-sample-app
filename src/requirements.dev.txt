@@ -1,0 +1,11 @@
+ruff==0.0.282
+# pyflakes==3.1.0
+# pycodestyle==2.11.0
+# isort==5.12.0
+# flake8==6.1.0
+# mccabe==0.7.0
+# pep8-naming==0.13.3
+# pydocstyle==6.3.0
+# pyupgrade==3.10.1
+# tokenize-rt==5.2.0
+# flake8-annotations==3.0.1

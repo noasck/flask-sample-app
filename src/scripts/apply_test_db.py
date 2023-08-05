@@ -1,12 +1,11 @@
 """Apply dummy sql scripts."""
-from psycopg import connect
-from typing import Optional, List
+
 from loguru import logger
+from psycopg import connect
 
-from ..utils.config import config
+from src.utils.config import config
 
-
-sql_commands: List[str] = [
+sql_commands: list[str] = [
     """
         CREATE DATABASE t_accounting OWNER batya;
     """,
@@ -16,14 +15,14 @@ sql_commands: List[str] = [
 ]
 
 
-def run(scripts: Optional[List[str]] = None):
+def run() -> None:
     """Apply dummy sql scripts."""
     conn = connect(config.dsn)
     try:
         for command in sql_commands:
             conn.execute(command)
-            logger.info("Executed: {}".format(command))
-    except:
+            logger.info(f"Executed: {command}")
+    except:  # noqa: E722
         logger.exception("Shit happened!!!")
 
 

@@ -1,0 +1,33 @@
+[tool.ruff]
+select = ["ALL"]
+ignore = ["D211", "D212", "ANN101", "ANN102", "ANN002", "ANN003", "SLF"]
+
+fixable = ["ALL"]
+
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "venv",
+    "*test.py",
+]
+per-file-ignores = {}
+
+# Same as Black.
+line-length = 99
+
+[tool.ruff.pydocstyle]
+convention = "google"

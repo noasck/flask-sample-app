@@ -1,7 +1,7 @@
 """Main flow."""
-from .utils.config import config, APP_NAME, AllowedEnvs
-from loguru import logger
 from flask import Flask
+
+from .utils.config import APP_NAME, AllowedEnvs, config
 
 
 def create_app() -> Flask:
@@ -14,7 +14,8 @@ def create_app() -> Flask:
     return app
 
 
-def main():
+def run() -> None:
+    """Run application for development."""
     create_app().run(
         host=config.flask_host,
         port=config.flask_port,
