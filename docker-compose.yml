@@ -5,8 +5,7 @@ services:
         build: .
         command: ["python", "-m", "src"]
         env_file:
-            - ./configs/api/default
-            - ./configs/api/override
+            - ./configs/dev.env
         networks:
             - dev_postgres_ntwk
         depends_on:
@@ -14,9 +13,8 @@ services:
 
     tests:
         build: .
-        command: ["pytest", "src"]
         env_file:
-            - ./configs/api/test
+            - ./configs/test.env
         networks:
             - tests_postgres_ntwk
         depends_on:
@@ -25,7 +23,9 @@ services:
     dev_postgres:
         image: postgres:latest
         env_file:
-            - ./configs/postgres/default
+            - ./configs/postgres.env
+        volumes:
+            - pgdata_dev:/var/lib/postgresql/data
         expose:
             - 5432
         networks:
@@ -33,9 +33,15 @@ services:
     
     tests_postgres:
         extends: dev_postgres
+        volumes:
+            - pgdata_test:/var/lib/postgresql/data
         networks:
             - tests_postgres_ntwk
 
 networks:
     dev_postgres_ntwk:
     tests_postgres_ntwk:
+
+volumes:
+    pgdata_dev:
+    pgdata_test:

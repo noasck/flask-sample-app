@@ -32,13 +32,13 @@ class _ConnectionPool:
 
         raise DBError(
             msg="PG db reconnection error.",
-            exc_info={"context": args},
+            errors={"context": args},
         )
 
     def _init(self) -> None:
         """Instanciate connection pool."""
         self.pool = psycopg_pool.ConnectionPool(
-            config.dsn,
+            psycopg.conninfo.make_conninfo(**config.postgres_conn_info),
             max_size=20,
             max_waiting=5,
             timeout=20,
@@ -62,7 +62,7 @@ def db_query(func: callable) -> callable:
         except psycopg.Error as error:
             raise DBError(
                 msg="Database exception during query execution.",
-                exc_info={"diag": error.diag},
+                errors={"diag": error.diag},
             ) from error
 
     return wrapper

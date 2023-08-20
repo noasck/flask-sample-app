@@ -22,7 +22,7 @@ def test_ConnectionPool_singleton():
     ):
         assert _ConnectionPool() is _ConnectionPool()
         assert _ConnectionPool().pool == mock_conn
-    
+
     # IMPORTANT: teardown mock of _ConnectionPool
 
     _ConnectionPool._instance = None
@@ -34,7 +34,7 @@ def test_ConnectionPool_connect():
     with _ConnectionPool().pool.connection() as conn:
         res = conn.execute("SELECT 42;")
         assert res.fetchone()[0] == 42
- 
+
 
 @pytest.mark.integrity
 def test_db_query():
@@ -44,6 +44,5 @@ def test_db_query():
     def read_42(cursor: psycopg.Cursor):
         """Dummy service method."""
         return cursor.execute("select 42;").fetchone()[0]
-
 
     assert read_42() == 42

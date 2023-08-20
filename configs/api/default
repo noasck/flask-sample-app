@@ -1,5 +1,0 @@
-# Please, create "override" file with following variables to override:
-ACCOUNTING_APP_ENV=development
-ACCOUNTING_APP_DSN=postgresql://batya:dummy-pass@dev_postgres:5432/accounting
-ACCOUNTING_APP_FLASK_HOST=0.0.0.0
-ACCOUNTING_APP_FLASK_PORT=5050

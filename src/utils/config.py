@@ -8,9 +8,11 @@ from typing import ClassVar
 from loguru import logger
 from pydantic import ValidationError, field_validator
 from pydantic.dataclasses import ConfigDict, dataclass
+from functools import cached_property
 
 APP_NAME = "accounting_app"
 _APP_ENV_PREFIX = APP_NAME.upper() + "_"
+_POSTGRES_ENV_PREFIX = APP_NAME.upper() + "_"
 
 
 class AllowedEnvs(Enum):
@@ -33,7 +35,11 @@ class ConfigParser:
     """Pass lowercased envs names below."""
 
     env: AllowedEnvs
-    dsn: str
+    postgres_port: str
+    postgres_host: str
+    postgres_db: str
+    postgres_user: str
+    postgres_password: str
     flask_host: str
     flask_port: int
 
@@ -42,6 +48,17 @@ class ConfigParser:
     def validate_env(cls, v: str) -> AllowedEnvs:
         """Validate env is one of allowed."""
         return AllowedEnvs(v)
+
+    @cached_property
+    def postgres_conn_info(self) -> dict:
+        """Returns connection info as a dictionary."""
+        return {
+            "host": self.postgres_host,
+            "port": self.postgres_port,
+            "user": self.postgres_user,
+            "password": self.postgres_password,
+            "dbname": self.postgres_db,
+        }
 
 
 class _Config:

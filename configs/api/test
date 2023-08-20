@@ -1,4 +1,0 @@
-ACCOUNTING_APP_ENV=testing
-ACCOUNTING_APP_DSN=postgresql://batya:dummy-pass@tests_postgres:5432/accounting
-ACCOUNTING_APP_FLASK_HOST=0.0.0.0
-ACCOUNTING_APP_FLASK_PORT=5050
