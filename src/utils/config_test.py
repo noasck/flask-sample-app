@@ -1,13 +1,14 @@
-import pytest
 import os
 
-from .config import _Config, ConfigParser, AllowedEnvs, _APP_ENV_PREFIX, APP_NAME
+import pytest
 from pydantic import ValidationError
 
+from .config import _APP_ENV_PREFIX, APP_NAME, ConfigParser, Envs, _Config
 
-@pytest.fixture
+
+@pytest.fixture()
 def config_class():  # noqa
-    """Get config class with no instance created"""
+    """Get config class with no instance created."""
     _Config._instance = None
     return _Config
 
@@ -26,7 +27,7 @@ def test_ConfigParser_works():
     }
     parsed = ConfigParser(**envs)
     assert parsed
-    assert parsed.env is AllowedEnvs.test
+    assert parsed.env is Envs.test
     assert type(parsed.flask_port) == int
 
 
@@ -35,4 +36,4 @@ def test_ConfigParser_required_fields():
     with pytest.raises(ValidationError) as err:
         ConfigParser()
 
-    assert all([err["msg"] == "Field required" for err in err.value.errors()])
+    assert all(err["msg"] == "Field required" for err in err.value.errors())

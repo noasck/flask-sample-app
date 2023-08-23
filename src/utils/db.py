@@ -86,7 +86,7 @@ def db_command(func: callable) -> callable:
         except psycopg.Error as error:
             raise DBError(
                 msg="Database exception during transaction.",
-                exc_info={"diag": error.diag},
+                errors={"diag": error.diag},
             ) from error
 
     return wrapper

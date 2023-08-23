@@ -1,6 +1,4 @@
-"""
-Add test table
-"""
+"""Add test table."""
 
 from yoyo import step
 

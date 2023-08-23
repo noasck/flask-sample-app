@@ -1,11 +1,9 @@
-import pytest
-import psycopg_pool
-import psycopg
-
 from unittest import mock
 
-from .db import db_command, db_query, _ConnectionPool
-from ..exceptions import DBError
+import psycopg
+import pytest
+
+from .db import _ConnectionPool, db_command, db_query
 
 
 def test_ConnectionPool_singleton():
@@ -28,7 +26,7 @@ def test_ConnectionPool_singleton():
     _ConnectionPool._instance = None
 
 
-@pytest.mark.integrity
+@pytest.mark.integrity()
 def test_ConnectionPool_connect():
     """Positive case: open connection pool to test db."""
     with _ConnectionPool().pool.connection() as conn:
@@ -36,7 +34,7 @@ def test_ConnectionPool_connect():
         assert res.fetchone()[0] == 42
 
 
-@pytest.mark.integrity
+@pytest.mark.integrity()
 def test_db_query():
     """Test positive case: db_query decorator."""
 
@@ -46,3 +44,29 @@ def test_db_query():
         return cursor.execute("select 42;").fetchone()[0]
 
     assert read_42() == 42
+
+
+@pytest.mark.integrity()
+def test_db_command():
+    """Test positive case: db_command decorator."""
+
+    @db_command
+    def write_row_in_test_table(row: dict, *, cursor: psycopg.Cursor):
+        """Write a single row in test table."""
+        cursor.execute(
+            """
+                INSERT INTO "test_table" VALUES (1, %(value)s);
+            """,
+            row,
+        )
+        return True
+    
+    @db_command
+    def read_rows_in_test_table(*, cursor: psycopg.Cursor):
+        """Read all rows in test table."""
+        return cursor.execute("SELECT * FROM test_table;").fetchall()
+
+    assert write_row_in_test_table(row={"value": "aboba"})
+
+    assert len(read_rows_in_test_table()) == 1
+    assert read_rows_in_test_table()[0][1] == "aboba"

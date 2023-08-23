@@ -3,19 +3,19 @@ import os
 import sys
 import threading
 from enum import Enum
+from functools import cached_property
 from typing import ClassVar
 
 from loguru import logger
 from pydantic import ValidationError, field_validator
 from pydantic.dataclasses import ConfigDict, dataclass
-from functools import cached_property
 
 APP_NAME = "accounting_app"
 _APP_ENV_PREFIX = APP_NAME.upper() + "_"
 _POSTGRES_ENV_PREFIX = APP_NAME.upper() + "_"
 
 
-class AllowedEnvs(Enum):
+class Envs(Enum):
 
     """Allowed ENV and FLASK_ENV values."""
 
@@ -34,7 +34,7 @@ class ConfigParser:
 
     """Pass lowercased envs names below."""
 
-    env: AllowedEnvs
+    env: Envs
     postgres_port: str
     postgres_host: str
     postgres_db: str
@@ -45,9 +45,9 @@ class ConfigParser:
 
     @field_validator("env")
     @classmethod
-    def validate_env(cls, v: str) -> AllowedEnvs:
+    def validate_env(cls, v: str) -> Envs:
         """Validate env is one of allowed."""
-        return AllowedEnvs(v)
+        return Envs(v)
 
     @cached_property
     def postgres_conn_info(self) -> dict:
@@ -117,7 +117,7 @@ class _Config:
         logger.remove()
         # If env TEST or DEV: log to STDERR
         # If env PROD or DEV: log to FILE
-        if self.config.env in (AllowedEnvs.test, AllowedEnvs.dev):
+        if self.config.env in (Envs.test, Envs.dev):
             self._logger_sinks["stderr"] = logger.add(
                 sys.stderr,
                 level="TRACE",
@@ -128,7 +128,7 @@ class _Config:
                 "<blue>{file}</blue>:<m>{line}</m> - "
                 "<level>{message}</level> -- <b>{extra}</b>",
             )
-        if self.config.env in (AllowedEnvs.prod, AllowedEnvs.dev):
+        if self.config.env in (Envs.prod, Envs.dev):
             self._logger_sinks["file"] = logger.add(
                 f"logs/{APP_NAME}_{{time}}.log",
                 compression="zip",

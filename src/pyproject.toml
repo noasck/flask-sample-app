@@ -24,7 +24,8 @@ exclude = [
     "__pypackages__",
     "_build",
     "venv",
-    "*test.py",
+    "*_test.py",
+    "migrations",
 ]
 per-file-ignores = {}
 
