@@ -27,7 +27,11 @@ def wait_for_db() -> None:
 
 def apply_migrations() -> None:
     """Apply yoyo migrations."""
-    backend = get_backend("postgresql+psycopg://{user}:{password}@{host}:{port}/{dbname}".format(**config.postgres_conn_info))
+    backend = get_backend(
+        "postgresql+psycopg://{user}:{password}@{host}:{port}/{dbname}".format(
+            **config.postgres_conn_info,
+        ),
+    )
     migrations = read_migrations(
         str(pathlib.Path(__file__).parent.joinpath(pathlib.Path("migrations")).absolute()),
     )

@@ -60,7 +60,7 @@ def test_db_command():
             row,
         )
         return True
-    
+
     @db_command
     def read_rows_in_test_table(*, cursor: psycopg.Cursor):
         """Read all rows in test table."""
