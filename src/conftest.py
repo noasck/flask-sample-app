@@ -30,7 +30,8 @@ def clear_tables(request: pytest.FixtureRequest) -> psycopg.Cursor:
 
         conn.pool = psycopg_pool.ConnectionPool(
             conninfo.make_conninfo(**test_conninfo),
-            max_size=5,
+            min_size=1,
+            max_size=1,
             max_waiting=5,
             timeout=10,
             kwargs={"autocommit": True},

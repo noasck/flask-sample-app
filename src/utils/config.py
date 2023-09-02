@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import ClassVar
 
 from loguru import logger
-from pydantic import ValidationError, field_validator
+from pydantic import ValidationError, field_validator, PositiveInt
 from pydantic.dataclasses import ConfigDict, dataclass
 
 APP_NAME = "accounting_app"
@@ -40,6 +40,7 @@ class ConfigParser:
     postgres_db: str
     postgres_user: str
     postgres_password: str
+    postgres_pool_size: PositiveInt
     flask_host: str
     flask_port: int
 

@@ -39,7 +39,8 @@ class _ConnectionPool:
         """Instanciate connection pool."""
         self.pool = psycopg_pool.ConnectionPool(
             psycopg.conninfo.make_conninfo(**config.postgres_conn_info),
-            max_size=20,
+            min_size=1,
+            max_size=config.postgres_pool_size,
             max_waiting=5,
             timeout=20,
             kwargs={"autocommit": True},
