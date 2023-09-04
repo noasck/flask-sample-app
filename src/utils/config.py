@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import ClassVar
 
 from loguru import logger
-from pydantic import ValidationError, field_validator, PositiveInt
+from pydantic import PositiveInt, ValidationError, field_validator
 from pydantic.dataclasses import ConfigDict, dataclass
 
 APP_NAME = "accounting_app"
